@@ -1,0 +1,41 @@
+Microserver implementation with C++
+==================
+
+Introduction
+------------
+Microservices architectures are becoming more common as a deploymentmodel for componentized systems. I will not go in depth on what is a microservice architecture. Martin Fowler gives a description of the microservice architecture on his website; see the following article about link:http://martinfowler.com/articles/microservices.html[microservices] from Martin Fowler and James Lewis.
+
+I will show an implementation of an microservices server. This implementation uses minimal resources. The server will be deployed seperate from services that use this server to provide services to the world.
+
+Prerequisites
+-------------
+This server is based on the Poco Project libraries; see the link:http://pocoproject.org[Poco Project libraries]. This server must be compiled with an C++ C11 compatible compiler.
+
+How does it work
+----------------
+After compiling you can start the microserver-app. Make sure that the microserver-app.properties file is in the same directory as the executable or give a command line argument !!Say which argument!! to specify the configuration path and file. In the configuration file the services are defined. Services are defined by an url and the library that implements the service. 
+
+Classes must inherit from AbstractRequestHandler for the class loading mechanism  as described in Poco's library and class loading documentation. These classes must also inherit from HTTPRequestHandler for the RequestHandlerFactory, because this factory delivers HTTPRequestHandlers. It is bad practice to have the abstract class to inherit from a concrete class, so it is up to the user of the microserver to make fulfill this prerequisite.
+
+When an URI doesn't have a service to service the requested URI the microserver responds with a 404 Not Found http error.
+LazyLoading property has a default value of false, which means no LazyLoading
+Single uri from a library. 
+Properties example
+microserver.library.this_is_my_library_name = an uri
+microserver.library.this_is_my_library_name.class = a class
+
+the this_is_my_library_name can exist more than one time, but the uri must be 
+unique. The class must be a subclass of HTTPRequestHandler.
+
+--Not implemented yet
+If you want to service more than one uri from the one library you can use the 
+following properties.
+microserver.library.this_is_my_library_name.uri1 = an uri
+microserver.library.this_is_my_library_name.uri1.class = a class
+microserver.library.this_is_my_library_name.uri2 = an uri
+microserver.library.this_is_my_library_name.uri2.class = a class
+
+--Not implemented yet
+detects it's free port automatically..... !!Implement this!!
+
+
