@@ -13,5 +13,5 @@ list (APPEND resources/microserver-app.properties)
 # Create executable hmd-be-app
 add_executable (microserver-app ${MICROSERVER-APP-SRC})
 
-# target_link_libraries (microserver-app LINK_PUBLIC microserver-lib PocoCrypto PocoFoundation PocoNet PocoUtil PocoJSON)
-target_link_libraries (microserver-app LINK_PUBLIC PocoCrypto PocoFoundation PocoNet PocoUtil PocoJSON)
+target_link_libraries (microserver-app LINK_PUBLIC microserver-lib PocoCrypto PocoFoundation PocoNet PocoUtil PocoJSON)
+# target_link_libraries (microserver-app LINK_PUBLIC PocoCrypto PocoFoundation PocoNet PocoUtil PocoJSON)

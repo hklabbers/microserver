@@ -5,27 +5,43 @@ Introduction
 ------------
 Microservices architectures are becoming more common as a deploymentmodel for componentized systems. I will not go in depth on what is a microservice architecture. Martin Fowler gives a description of the microservice architecture on his website; see the following article about link:http://martinfowler.com/articles/microservices.html[microservices] from Martin Fowler and James Lewis.
 
-I will show an implementation of an microservices server. This implementation uses minimal resources. The server will be deployed seperate from services that use this server to provide services to the world.
+I will show an implementation of a microservices server. This implementation uses minimal resources. The server will be deployed seperate from services that use this server to provide services to the world.
 
 Prerequisites
 -------------
-This server is based on the Poco Project libraries; see the link:http://pocoproject.org[Poco Project libraries]. This server must be compiled with an C++ C11 compatible compiler.
+This server is based on the Poco Project libraries; see the link:http://pocoproject.org[Poco Project libraries]. This server must be compiled with an C++ C11 compatible compiler. To compile and link the microserver and the services that use this server CMake (3.3.2) is used to prepare the makefiles (GNU make 3.81). This software is developed on OS X Yosemite (10.10.5) with clang (700.1.81)A.
 
 How does it work
 ----------------
-After compiling you can start the microserver-app. Make sure that the microserver-app.properties file is in the same directory as the executable or give a command line argument !!Say which argument!! to specify the configuration path and file. In the configuration file the services are defined. Services are defined by an url and the library that implements the service. 
+After compiling you can start the microserver-app. The applications' configuration must be stored in a property file (the file extension for the property file must be .properties). By default the search path for the property file is the directory in which the application executable is stored, if not found at that location then /etc/executable name is searched and after that the /etc directory is searched for the property file. A location can be given by the means of the command line argument -c or --config with a full path to the property file. If this command line argument is given, it will have precedence over the default search paths. The microserver-app will not look into the default paths for a configuration file. When the microserver-app is started as a daemon, it will change the current working directory to "/" (root of the filesystem). In the configuration file the services are defined. Services are defined by an url, library that implements the service and the fully qualified class that acts as the provider. A full path to the implementing libary must also be given in the property file.
 
-Classes must inherit from AbstractRequestHandler for the class loading mechanism  as described in Poco's library and class loading documentation. These classes must also inherit from HTTPRequestHandler for the RequestHandlerFactory, because this factory delivers HTTPRequestHandlers. It is bad practice to have the abstract class to inherit from a concrete class, so it is up to the user of the microserver to make fulfill this prerequisite.
+The provider class must inherit from AbstractRequestHandler for the class loading mechanism  as described in Poco's library and class loading documentation. The provider class acts as a factory for classes that handle the actual requests. The classes that handle the actual requests must inherit from HTTPRequestHandler.
 
 When an URI doesn't have a service to service the requested URI the microserver responds with a 404 Not Found http error.
 LazyLoading property has a default value of false, which means no LazyLoading
 Single uri from a library. 
 Properties example
 microserver.library.this_is_my_library_name = an uri
-microserver.library.this_is_my_library_name.class = a class
+microserver.library.this_is_my_library_name.class = namespace::a class
+
+like to use namespaces to make it possible to re-use classnames. A favorite is the classname MicroServerRequestHandlerProvider in my libraries with a namespace that is the library name. So for the ms-authenticator library the namespace name is
+ms_authemnticator.
 
 the this_is_my_library_name can exist more than one time, but the uri must be 
 unique. The class must be a subclass of HTTPRequestHandler.
+
+Logging implementation is done as a hierarchical logger. The application logger is the root 
+Logger. Class Loggers have the following name convention: dir.dir.classname.
+Set correct properties for logging, so error messages are displayed (and also debug.. when debug)
+
+You can set a status and shutdown url in the configuration when not set the default status and shutdown url will be used, this is /status and /shutdown.
+/status: response will be json with status: 200 ({HTTPStatus: 200, HTTPStatusDescription: OK, CurrentLoad: 1}) or 503 (with time indication as given when going into shutdown, this will let all clients finish and then shutdown.
+
+Make it reloading with status setup for loadbalancers, make a command that can be given locally or ip range
+to reload config in x seconds. So the procedure is: set status to not available, do not accept new connections (reject everything except status and 
+stop reloading) wait the given nuber of seconds (or the default seconds), after that reload the configuration and when that is finished, then set status to available and accept connections (first accet connections and then status update).
+
+/maintenance (default is 20 minutes) the server will report a 503 status and gives the server 15 minutes (waaay to long) to finish their tasks and 5 minutes to reload the configuration or restart...
 
 --Not implemented yet
 If you want to service more than one uri from the one library you can use the 
@@ -38,4 +54,6 @@ microserver.library.this_is_my_library_name.uri2.class = a class
 --Not implemented yet
 detects it's free port automatically..... !!Implement this!!
 
-
+---The authenticator service
+/authenticator/
+/authenticator/token

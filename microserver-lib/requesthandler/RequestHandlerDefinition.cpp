@@ -28,17 +28,3 @@ std::string RequestHandlerDefinition::getLibraryNameWithPathAndSuffix() const {
   returnStr.append(path).append("lib").append(libraryName).append(suffix);
   return returnStr;
 }
-
-std::string RequestHandlerDefinition::toString() const {
-  std::string formattedString = {"Uri: "};
-  formattedString.append(uri)
-      .append(", LibraryName: ")
-      .append(libraryName)
-      .append(", Path: ")
-      .append(path)
-      .append(", Suffix: ")
-      .append(suffix)
-      .append(", ClassName: ")
-      .append(className);
-  return formattedString;
-}

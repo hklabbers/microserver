@@ -1,10 +1,10 @@
 //
-// Error400RequestHandler.h
+// StatusRequestHandler.h
 //
 // Copyright (c) December 2015 Hans Klabbers
 //
-#ifndef __ERROR400REQUESTHANDLER_H__
-#define __ERROR400REQUESTHANDLER_H__
+#ifndef MICROSERVER_LIB_REQUESTHANDLER_STATUSREQUESTHANDLER_H
+#define MICROSERVER_LIB_REQUESTHANDLER_STATUSREQUESTHANDLER_H
 
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPServerRequest.h"
@@ -13,10 +13,10 @@
 using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
-using Poco::Net::HTTPServerSession;
 
-class Error400RequestHandler : public HTTPRequestHandler {
+class StatusRequestHandler : public HTTPRequestHandler {
 public:
   void handleRequest(HTTPServerRequest &request, HTTPServerResponse &response);
 };
-#endif // __ERROR400REQUESTHANDLER_H__
+
+#endif // MICROSERVER_LIB_REQUESTHANDLER_STATUSREQUESTHANDLER_H

@@ -4,8 +4,8 @@
 // Copyright (c) December 2015 Hans Klabbers
 //
 
-#ifndef __REQUESTHANDLERDEFINITION_H__
-#define __REQUESTHANDLERDEFINITION_H__
+#ifndef MICROSERVER_LIB_REQUESTHANDLER_REQUESTHANDLERDEFINITION_H
+#define MICROSERVER_LIB_REQUESTHANDLER_REQUESTHANDLERDEFINITION_H
 
 #include "AbstractRequestHandler.h"
 #include "Poco/ClassLoader.h"
@@ -24,7 +24,6 @@ public:
   std::string getPath() const;
   std::string getClassName() const;
   std::string getLibraryNameWithPathAndSuffix() const;
-  std::string toString() const;
 
 private:
   std::string uri{};
@@ -34,4 +33,4 @@ private:
   std::string className{};
 };
 
-#endif /* __REQUESTHANDLERDEFINITION_H__ */
+#endif /* MICROSERVER_LIB_REQUESTHANDLER_REQUESTHANDLERDEFINITION_H */

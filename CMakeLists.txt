@@ -9,4 +9,6 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -O0 -g3 -Wall -fmessage-leng
 
 # First add external libraries
 add_subdirectory(external-libraries)
+add_subdirectory(microserver-lib)
 add_subdirectory(microserver-app)
+add_subdirectory(microserver-tst)

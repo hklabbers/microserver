@@ -3,8 +3,8 @@
 //
 // Copyright (c) December 2015 Hans Klabbers
 //
-#ifndef __ABSTRACTREQUESTHANDLER_H__
-#define __ABSTRACTREQUESTHANDLER_H__
+#ifndef MICROSERVER_LIB_REQUESTHANDLER_ABSTRACTREQUESTHANDLER_H
+#define MICROSERVER_LIB_REQUESTHANDLER_ABSTRACTREQUESTHANDLER_H
 
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"
@@ -18,6 +18,6 @@ class AbstractRequestHandler {
 public:
   AbstractRequestHandler();
   ~AbstractRequestHandler();
-  virtual HTTPRequestHandler* getRequestHandler()=0; 
+  virtual HTTPRequestHandler *getRequestHandler(std::string uri) = 0;
 };
-#endif // __ABSTRACTREQUESTHANDLER_H__
+#endif // MICROSERVER_LIB_REQUESTHANDLER_ABSTRACTREQUESTHANDLER_H
