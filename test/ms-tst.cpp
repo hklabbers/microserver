@@ -1,5 +1,5 @@
 //
-// microserver-tst.cpp
+// ms-tst.cpp
 //
 // Copyright (c) December 2015 Hans Klabbers
 //

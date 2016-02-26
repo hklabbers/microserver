@@ -1,8 +1,7 @@
 //
-// RequestHandlerDefinition.cpp
+// Created by Hans Klabbers on 10-02-16.
 //
-// Copyright (c) November 2015 Hans Klabbers
-//
+
 #include "RequestHandlerDefinition.h"
 
 RequestHandlerDefinition::RequestHandlerDefinition(std::string uri,
@@ -10,13 +9,13 @@ RequestHandlerDefinition::RequestHandlerDefinition(std::string uri,
                                                    std::string path,
                                                    std::string suffix,
                                                    std::string className)
-    : uri(uri), libraryName(libraryName), path(path), suffix(suffix),
-      className(className) {}
+        : uri(uri), libraryName(libraryName), path(path), suffix(suffix),
+          className(className) {}
 
 std::string RequestHandlerDefinition::getUri() const { return uri; }
 
 std::string RequestHandlerDefinition::getLibraryName() const {
-  return libraryName;
+    return libraryName;
 }
 
 std::string RequestHandlerDefinition::getPath() const { return path; }
@@ -24,7 +23,7 @@ std::string RequestHandlerDefinition::getPath() const { return path; }
 std::string RequestHandlerDefinition::getClassName() const { return className; }
 
 std::string RequestHandlerDefinition::getLibraryNameWithPathAndSuffix() const {
-  std::string returnStr{};
-  returnStr.append(path).append("lib").append(libraryName).append(suffix);
-  return returnStr;
+    std::string returnStr{};
+    returnStr.append(path).append("lib").append(libraryName).append(suffix);
+    return returnStr;
 }

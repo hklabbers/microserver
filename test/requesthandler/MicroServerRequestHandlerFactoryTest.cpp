@@ -3,12 +3,12 @@
 //
 // Copyright (c) December 2015 Hans Klabbers
 //
-#include "requesthandler/MicroServerRequestHandlerFactory.h"
-#include "requesthandler/RequestHandlerDefinition.h"
 #include "../mock/MockHTTPRequest.h"
 #include "../mock/MockHTTPResponse.h"
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include "../../microserver/requesthandler/RequestHandlerDefinition.h"
+#include "../../microserver/requesthandler/MicroServerRequestHandlerFactory.h"
 
 using microserver_mock::MockHTTPRequest;
 using microserver_mock::MockHTTPResponse;

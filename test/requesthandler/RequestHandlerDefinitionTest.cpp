@@ -3,8 +3,8 @@
 //
 //  Copyright (c) December 2015 Hans Klabbers
 //
-#include "requesthandler/RequestHandlerDefinition.h"
 #include "gtest/gtest.h"
+#include "../../microserver/requesthandler/RequestHandlerDefinition.h"
 
 namespace RequestHandlerDefinitionTest {
 

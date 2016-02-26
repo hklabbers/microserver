@@ -15,6 +15,7 @@
 using Poco::Net::SocketAddress;
 using Poco::Net::HTTPServerResponse;
 using Poco::Net::HTTPServerParams;
+using Poco::Net::HTTPServerRequest;
 
 namespace microserver_mock {
 

@@ -39,5 +39,8 @@
 # Eclipse
 .settings/
 
+# CLion
+.idea/
+
 # CMake out of source build directory
 build/
