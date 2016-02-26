@@ -32,7 +32,7 @@ private:
   ClassLoader<AbstractRequestHandler> classLoader;
   bool lazyLoading = true;
   std::string loadURI;
-  Logger &l = Logger::get("requestHandler.MicroServerRequestHandlerFactory");
+  Logger &l = Logger::get("MicroServerRequestHandlerFactory");
 
   bool loadAllLibraries();
   bool loadLibrary(std::string libraryName);

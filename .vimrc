@@ -73,3 +73,4 @@ nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " To search in directories to open file which name is under the cursor
 let &path.="/usr/local/include/AL,/usr/include/AL,"
+
