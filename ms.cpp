@@ -1,7 +1,5 @@
 //
-// microserver-app.cpp
-//
-// Copyright (c) November 2015 Hans Klabbers
+// Copyright (c) March 2016 Hans Klabbers
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -12,8 +10,8 @@
 //    notice, this list of conditions and the following disclaimer in the
 //    documentation and/or other materials provided with the distribution.
 // 3. Redistributions in any form must be accompanied by information on
-//    how to obtain complete source code for the this software and any
-//    accompanying software that uses the this software.  The source code
+//    how to obtain complete source code for this software and any
+//    accompanying software that uses this software.  The source code
 //    must either be included in the distribution or be available for no
 //    more than the cost of distribution plus a nominal fee, and must be
 //    freely redistributable under reasonable conditions.  For an
@@ -25,8 +23,8 @@
 // THIS SOFTWARE IS PROVIDED BY COPYRIGHT HOLDERS ``AS IS'' AND ANY EXPRESS OR
 // IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
-// NON-INFRINGEMENT, ARE DISCLAIMED.  IN NO EVENT SHALL ORACLE BE LIABLE
-// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// NON-INFRINGEMENT, ARE DISCLAIMED.  IN NO EVENT SHALL COPYRIGHT HOLDERS
+// BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
 // CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
 // SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
 // BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
@@ -76,17 +74,12 @@ protected:
         ServerApplication::defineOptions(options);
 
         options.addOption(
-                Option("help", "h",
-                       "display help information on command line arguments")
-                        .required(false)
-                        .repeatable(false));
+                Option("help", "h", "display help information on command line arguments").required(false).repeatable(
+                        false));
 
         options.addOption(
-                Option("config", "c",
-                       "configuration file location")
-                        .required(false)
-                        .repeatable(false)
-                        .argument("file"));
+                Option("config", "c", "configuration file location").required(false).repeatable(false).argument(
+                        "file"));
     }
 
     void handleOption(const std::string &name, const std::string &value) {
@@ -109,8 +102,7 @@ protected:
         helpFormatter.setCommand(commandName());
         helpFormatter.setUsage("OPTIONS");
 //TODO: put the url in
-        helpFormatter.setHeader(
-                "A web server that serves microservices, see [url to github].");
+        helpFormatter.setHeader("A web server that serves microservices, see [url to github].");
         helpFormatter.format(std::cout);
     }
 
@@ -122,8 +114,8 @@ protected:
 
         if (loadLibraryConfiguration(requestHandlers)) {
             auto port = (unsigned short) config().getInt("microrSserver.settings.port", 9980);
-            auto maxQueued = config().getInt("microServer.settings.maxQueued", 100);
-            auto maxThreads = config().getInt("microServer.settings.maxThreads", 16);
+            auto maxQueued = config().getInt("microserver.settings.maxQueued", 100);
+            auto maxThreads = config().getInt("microserver.settings.maxThreads", 16);
             auto statusURI = config().getString("microserver.settings.statusURI", "/status");
             ThreadPool::defaultPool().addCapacity(maxThreads);
 
@@ -132,9 +124,7 @@ protected:
             pParams->setMaxThreads(maxThreads);
 
             ServerSocket svs(port);
-            HTTPServer srv(new MicroServerRequestHandlerFactory(
-                                   requestHandlers, lazyLoading, statusURI),
-                           svs, pParams);
+            HTTPServer srv(new MicroServerRequestHandlerFactory(requestHandlers, lazyLoading, statusURI), svs, pParams);
             srv.start();
             waitForTerminationRequest();
             srv.stop();
@@ -187,10 +177,7 @@ private:
         const std::string keyClassLabel = {"class"};
         const std::string keyPathLabel = {"path"};
 
-        //Use ConfigurationView????
         Poco::Util::AbstractConfiguration::Keys libraryConfigKeys;
-        Poco::Util::AbstractConfiguration *myView {app.config().createView(keyPrefix)};
-        Poco::Util::ConfigurationView *view = new Poco::Util::ConfigurationView(keyPrefix, app.config().createView(keyPrefix));
         app.config().keys(keyPrefix, libraryConfigKeys);
         for (auto key : libraryConfigKeys) {
             std::string libraryKey = {keyPrefix + "." + key};
@@ -200,9 +187,8 @@ private:
                 const auto uriValue = app.config().getString(libraryKey);
                 const auto classNameValue = app.config().getString(classNameKey);
                 const auto pathValue = app.config().getString(pathKey);
-                const RequestHandlerDefinition requestHandler = {
-                        uriValue, key, pathValue, Poco::SharedLibrary::suffix(),
-                        classNameValue};
+                const RequestHandlerDefinition requestHandler = {uriValue, key, pathValue,
+                                                                 Poco::SharedLibrary::suffix(), classNameValue};
                 requestHandlers.push_back(requestHandler);
             } catch (Poco::NotFoundException ex) {
                 noErrors = false;

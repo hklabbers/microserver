@@ -15,4 +15,3 @@ add_executable(runTests
         )
 
 target_link_libraries(runTests gmock gtest_main microserver ${POCO})
-#target_link_libraries(runTests)

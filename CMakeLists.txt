@@ -11,15 +11,13 @@ set(POCO PocoFoundation PocoNet PocoUtil)
 find_package(Boost 1.36.0 COMPONENTS filesystem system)
 include_directories(${Boost_INCLUDE_DIRS})
 
-#set(SOURCE_FILES ms.cpp)
-
 # Build gtest and googlemock
 add_subdirectory(test)
+
 add_subdirectory(microserver)
 
 add_executable(ms ms.cpp)
-target_link_libraries (ms microserver ${POCO} ${Boost_LIBRARIES})
+target_link_libraries(ms microserver ${POCO} ${Boost_LIBRARIES})
 
-#file(COPY resources/ms.properties DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 file(COPY resources/ms.properties DESTINATION ${CMAKE_BINARY_DIR})
 
