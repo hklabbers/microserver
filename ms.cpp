@@ -101,8 +101,7 @@ protected:
         HelpFormatter helpFormatter(options());
         helpFormatter.setCommand(commandName());
         helpFormatter.setUsage("OPTIONS");
-//TODO: put the url in
-        helpFormatter.setHeader("A web server that serves microservices, see [url to github].");
+        helpFormatter.setHeader("A web server that serves microservices, see https://github.com/hklabbers/microserver.");
         helpFormatter.format(std::cout);
     }
 
