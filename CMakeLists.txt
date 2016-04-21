@@ -5,7 +5,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O0 -g3 -Wall -fmessage-length=0")
 
 # Poco libraries used by this project
-set(POCO PocoFoundation PocoNet PocoUtil)
+set(POCO PocoFoundation PocoNet PocoNetSSL PocoUtil)
 
 #Boost libraries used by this project
 find_package(Boost 1.36.0 COMPONENTS filesystem system)
