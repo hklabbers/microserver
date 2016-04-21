@@ -38,6 +38,7 @@
 
 #include "microserver/requesthandler/RequestHandlerDefinition.h"
 #include "microserver/requesthandler/MicroServerRequestHandlerFactory.h"
+#include "Poco/Net/SecureServerSocket.h"
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Util/ServerApplication.h"
 #include "Poco/Util/HelpFormatter.h"
@@ -45,7 +46,7 @@
 #include "boost/filesystem.hpp"
 #include <iostream>
 
-using Poco::Net::ServerSocket;
+using Poco::Net::SecureServerSocket;
 using Poco::Net::HTTPServer;
 using Poco::Net::HTTPServerParams;
 using Poco::ThreadPool;
@@ -122,7 +123,7 @@ protected:
             pParams->setMaxQueued(maxQueued);
             pParams->setMaxThreads(maxThreads);
 
-            ServerSocket svs(port);
+            SecureServerSocket svs(port);
             HTTPServer srv(new MicroServerRequestHandlerFactory(requestHandlers, lazyLoading, statusURI), svs, pParams);
             srv.start();
             waitForTerminationRequest();
