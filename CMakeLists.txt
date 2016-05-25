@@ -11,6 +11,10 @@ set(POCO PocoFoundation PocoNet PocoNetSSL PocoUtil)
 find_package(Boost 1.36.0 COMPONENTS filesystem system)
 include_directories(${Boost_INCLUDE_DIRS})
 
+#OpenSSL libraries used by this project
+find_package(OpenSSL)
+include_directories(${OPENSSL_INCLUDE_DIR})
+
 # Build gtest and googlemock
 add_subdirectory(test)
 
