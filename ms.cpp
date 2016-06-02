@@ -113,7 +113,7 @@ protected:
         }
 
         if (loadLibraryConfiguration(requestHandlers)) {
-            auto port = (unsigned short) config().getInt("microrSserver.settings.port", 9980);
+            auto port = (unsigned short) config().getInt("microserver.settings.port", 9980);
             auto maxQueued = config().getInt("microserver.settings.maxQueued", 100);
             auto maxThreads = config().getInt("microserver.settings.maxThreads", 16);
             auto statusURI = config().getString("microserver.settings.statusURI", "/status");
