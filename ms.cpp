@@ -39,6 +39,7 @@
 #include "microserver/requesthandler/RequestHandlerDefinition.h"
 #include "microserver/requesthandler/MicroServerRequestHandlerFactory.h"
 #include "Poco/Net/SecureServerSocket.h"
+#include "Poco/Net/ServerSocket.h"
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Util/ServerApplication.h"
 #include "Poco/Util/HelpFormatter.h"
@@ -47,6 +48,7 @@
 #include <iostream>
 
 using Poco::Net::SecureServerSocket;
+using Poco::Net::ServerSocket;
 using Poco::Net::HTTPServer;
 using Poco::Net::HTTPServerParams;
 using Poco::ThreadPool;
@@ -117,18 +119,28 @@ protected:
             auto maxQueued = config().getInt("microserver.settings.maxQueued", 100);
             auto maxThreads = config().getInt("microserver.settings.maxThreads", 16);
             auto statusURI = config().getString("microserver.settings.statusURI", "/status");
+            auto secureServer = config().has("openSSL.server.privateKeyFile");
             ThreadPool::defaultPool().addCapacity(maxThreads);
 
             HTTPServerParams *pParams = new HTTPServerParams;
             pParams->setMaxQueued(maxQueued);
             pParams->setMaxThreads(maxThreads);
 
-
-            SecureServerSocket svs(port);
-            HTTPServer srv(new MicroServerRequestHandlerFactory(requestHandlers, lazyLoading, statusURI), svs, pParams);
-            srv.start();
-            waitForTerminationRequest();
-            srv.stop();
+            if (secureServer) {
+                SecureServerSocket svs(port);
+                HTTPServer srv(new MicroServerRequestHandlerFactory(requestHandlers, lazyLoading, statusURI), svs,
+                               pParams);
+                srv.start();
+                waitForTerminationRequest();
+                srv.stop();
+            } else {
+                ServerSocket svs(port);
+                HTTPServer srv(new MicroServerRequestHandlerFactory(requestHandlers, lazyLoading, statusURI), svs,
+                               pParams);
+                srv.start();
+                waitForTerminationRequest();
+                srv.stop();
+            }
             return Application::EXIT_OK;
         } else {
             return Application::EXIT_CONFIG;
