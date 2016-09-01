@@ -52,7 +52,7 @@ std::string RequestHandlerDefinition::getPath() const { return path; }
 std::string RequestHandlerDefinition::getClassName() const { return className; }
 
 std::string RequestHandlerDefinition::getLibraryNameWithPathAndSuffix() const {
-    std::string returnStr{};
-    returnStr.append(path).append("lib").append(libraryName).append(suffix);
+    std::string returnStr {path};
+    returnStr.append("lib").append(libraryName).append(suffix);
     return returnStr;
 }

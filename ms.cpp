@@ -61,9 +61,9 @@ using Poco::Util::AbstractConfiguration;
 
 class MicroServer : public Poco::Util::ServerApplication {
 public:
-    MicroServer() { }
+    MicroServer() {}
 
-    ~MicroServer() { }
+    ~MicroServer() {}
 
 protected:
     void initialize(Application &self) {
@@ -104,7 +104,8 @@ protected:
         HelpFormatter helpFormatter(options());
         helpFormatter.setCommand(commandName());
         helpFormatter.setUsage("OPTIONS");
-        helpFormatter.setHeader("A web server that serves microservices, see https://github.com/hklabbers/microserver.");
+        helpFormatter.setHeader(
+                "A web server that serves microservices, see https://github.com/hklabbers/microserver.");
         helpFormatter.format(std::cout);
     }
 
@@ -122,27 +123,20 @@ protected:
             auto secureServer = config().has("openSSL.server.privateKeyFile");
             ThreadPool::defaultPool().addCapacity(maxThreads);
 
-            HTTPServerParams *pParams = new HTTPServerParams;
+            auto *pParams = new HTTPServerParams;
             pParams->setMaxQueued(maxQueued);
             pParams->setMaxThreads(maxThreads);
 
-            if (secureServer) {
-                SecureServerSocket svs(port);
-                HTTPServer srv(new MicroServerRequestHandlerFactory(requestHandlers, lazyLoading, statusURI), svs,
-                               pParams);
-                srv.start();
-                waitForTerminationRequest();
-                srv.stop();
-            } else {
-                ServerSocket svs(port);
-                HTTPServer srv(new MicroServerRequestHandlerFactory(requestHandlers, lazyLoading, statusURI), svs,
-                               pParams);
-                srv.start();
-                waitForTerminationRequest();
-                srv.stop();
-            }
+            ServerSocket svs{(secureServer ? SecureServerSocket {port} : ServerSocket {port})};
+
+            HTTPServer srv(new MicroServerRequestHandlerFactory(requestHandlers, lazyLoading, statusURI), svs,
+                           pParams);
+            srv.start();
+            waitForTerminationRequest();
+            srv.stop();
             return Application::EXIT_OK;
-        } else {
+        }
+        else {
             return Application::EXIT_CONFIG;
         }
     }
@@ -161,11 +155,13 @@ private:
         if (loadConfigfileFromLocation) {
             if (exists(configfileLocation)) {
                 configfile = configfileLocation;
-            } else {
+            }
+            else {
                 l.error("Configuration file(" + configfileLocation + ") not found.");
                 return;
             }
-        } else {
+        }
+        else {
             std::string execName{this->commandName()};
             if (exists(execName + ".properties"))
                 configfile = execName + ".properties";
@@ -203,7 +199,8 @@ private:
                 const RequestHandlerDefinition requestHandler = {uriValue, key, pathValue,
                                                                  Poco::SharedLibrary::suffix(), classNameValue};
                 requestHandlers.push_back(requestHandler);
-            } catch (Poco::NotFoundException ex) {
+            }
+            catch (Poco::NotFoundException ex) {
                 noErrors = false;
                 l.information("Configuration for library " + key + " is not complete. MicroServer is not started.");
             }

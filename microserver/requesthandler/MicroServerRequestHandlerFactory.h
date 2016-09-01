@@ -61,7 +61,7 @@ public:
 private:
     std::vector<RequestHandlerDefinition> &requestHandlers;
     ClassLoader<AbstractRequestHandler> classLoader;
-    bool lazyLoading = true;
+    bool lazyLoading{true};
     std::string loadURI;
     Logger &l = Logger::get("MicroServerRequestHandlerFactory");
 

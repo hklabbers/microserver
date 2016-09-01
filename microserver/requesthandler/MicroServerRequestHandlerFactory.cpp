@@ -60,7 +60,7 @@ MicroServerRequestHandlerFactory::MicroServerRequestHandlerFactory(
 }
 
 HTTPRequestHandler *MicroServerRequestHandlerFactory::createRequestHandler(const HTTPServerRequest &request) {
-    l.information("request.getURI(): " + request.getURI());
+    l.information("request.getURI(): " + request.getURI() + " from: " + request.clientAddress().toString());
 
     if (boost::starts_with(request.getURI(), loadURI)) {
         return new StatusRequestHandler();
@@ -69,7 +69,7 @@ HTTPRequestHandler *MicroServerRequestHandlerFactory::createRequestHandler(const
     for (auto requestHandler : requestHandlers) {
         if (boost::starts_with(request.getURI(), requestHandler.getUri())) {
             l.debug("path: " + requestHandler.getLibraryNameWithPathAndSuffix());
-            bool libraryLoadedSuccessful = classLoader.isLibraryLoaded(
+            auto libraryLoadedSuccessful = classLoader.isLibraryLoaded(
                     requestHandler.getLibraryNameWithPathAndSuffix());
             if (!libraryLoadedSuccessful) {
                 libraryLoadedSuccessful = loadLibrary(requestHandler.getLibraryNameWithPathAndSuffix());
@@ -83,24 +83,27 @@ HTTPRequestHandler *MicroServerRequestHandlerFactory::createRequestHandler(const
                     l.error(ex.message());
                 }
             }
-            return 0;
         }
     }
     return new Error404RequestHandler();
 }
 
 bool MicroServerRequestHandlerFactory::loadAllLibraries() {
-    bool noErrors = true;
+    bool noErrors {true};
     for (auto requestHandler : requestHandlers) {
         if (!classLoader.isLibraryLoaded(requestHandler.getLibraryNameWithPathAndSuffix())) {
-            loadLibrary(requestHandler.getLibraryNameWithPathAndSuffix());
+            noErrors = loadLibrary(requestHandler.getLibraryNameWithPathAndSuffix());
+            if (!noErrors) {
+                l.error("Failed to load a library, micorserver stops loading libraries.");
+                break;
+            }
         }
     }
     return noErrors;
 }
 
 bool MicroServerRequestHandlerFactory::loadLibrary(std::string libraryName) {
-    bool noErrors = true;
+    bool noErrors {true};
     try {
         if (!classLoader.isLibraryLoaded(libraryName)) {
             l.information("Loading library: " + libraryName);
